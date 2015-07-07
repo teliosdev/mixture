@@ -1,0 +1,9 @@
+Style/StringLiterals:
+  EnforcedStyle: double_quotes
+Style/Encoding:
+  Enabled: true
+  AutoCorrectEncodingComment: "# encoding: utf-8\n"
+Style/RegexpLiteral:
+  EnforcedStyle: mixed
+Metrics/MethodLength:
+  Max: 15
