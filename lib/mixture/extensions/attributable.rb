@@ -6,39 +6,45 @@ module Mixture
     module Attributable
       # The class methods for attribution.
       module ClassMethods
-        def attribute(name, options)
+        def attribute(name, options = {})
           name = name.to_s.intern
-          attributes[name] = Attribute.new(name, options)
+          attr = attributes.create(name, options)
+          define_method(attr.getter) {     attribute(name)    }
+          define_method(attr.setter) { |v| attribute(name, v) }
+          attr
         end
 
         def attributes
-          @_attributes ||= {}
+          @_attributes ||= AttributeList.new
         end
       end
 
       # The instance methods for attribution.
       module InstanceMethods
-        private
-
         # Sets the attributes on the instance.
-        def __attributes__(attrs)
+        def attributes=(attrs)
           attrs.each { |key, value| attribute(key, value) }
         end
-        alias_method :attributes, :__attributes__
 
-        def __unknown_attribute__(attr)
+        def attributes
+          self.class.attributes.map do |name, attr|
+            [name, instance_variable_get(attr.ivar)]
+          end.to_h
+        end
+
+        def unknown_attribute(attr)
           fail ArgumentError, "Unknown attribute #{attr} passed"
         end
-        alias_method :unknown_attribute, :__unknown_attribute__
 
-        def __attribute__(key, value)
+        def attribute(key, value = Undefined)
           attr = self.class.attributes.fetch(key) do
             return unknown_attribute(key)
           end
 
-          value = coerce_attribute(attr, value) if
-                    respond_to?(:coerce_attribute)
-          instance_variable_set(:"@#{attr.name}", value)
+          return instance_variable_get(attr.ivar) if value == Undefined
+
+          value = attr.update(value)
+          instance_variable_set(attr.ivar, value)
         end
       end
 

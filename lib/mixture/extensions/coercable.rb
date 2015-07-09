@@ -4,29 +4,27 @@ module Mixture
   module Extensions
     # Extends the attribute definition to allow coercion.
     module Coercable
-      # Class methods.
-      module ClassMethods
-      end
+      def self.coerce_attribute(attribute, value)
+        return value unless attribute.options[:type]
+        attr_type = Type.infer(attribute.options[:type])
+        value_type = Type.infer(value)
 
-      # Instance methods.
-      module InstanceMethods
-        private
+        block = Coerce.coerce(from: value_type, to: attr_type)
 
-        def coerce_attribute(attribute, value)
-          return value unless attribute.options[:type]
+        begin
+          block.call(value)
+        rescue StandardError => e
+          raise CoercionError, "#{e.class}: #{e.message}", e.backtrace
         end
       end
 
-      # Called by Ruby when the module is included.  This just
-      # extends the base by the {ClassMethods} module and includes
-      # into the base the {InstanceMethods} module.
+      # Called by Ruby when the module is included.
       #
       # @param base [Object]
       # @return [void]
       # @api private
       def self.included(base)
-        base.extend ClassMethods
-        base.send :include, InstanceMethods
+        base.attributes.callbacks[:update] << method(:coerce_attribute)
       end
     end
   end

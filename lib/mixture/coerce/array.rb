@@ -6,9 +6,10 @@ module Mixture
     class Array < Base
       type Type::Array
 
-      coerce_to(Type::Object, &Itself)
-      coerce_to(Type::Set)  { |value| ::Set.new(value) }
-      coerce_to(Type::Hash) { |value| Hash[value] }
+      coerce_to(Type::Object, Itself)
+      coerce_to(Type::Array, Itself)
+      coerce_to(Type::Set, :to_set)
+      coerce_to(Type::Hash) { |value| ::Hash[value] }
     end
   end
 end

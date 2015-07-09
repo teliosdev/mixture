@@ -16,5 +16,15 @@ module Mixture
     def self.extensions
       @_extensions ||= {}
     end
+
+    require "mixture/extensions/attributable"
+    require "mixture/extensions/coercable"
+    require "mixture/extensions/hashable"
+    require "mixture/extensions/validatable"
+
+    register :attribute, Attributable
+    register :coerce, Coercable
+    register :hash, Hashable
+    register :validate, Validatable
   end
 end

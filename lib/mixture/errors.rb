@@ -8,4 +8,7 @@ module Mixture
   # Occurs when a value can't be coerced into another value.
   class CoercionError < BasicError
   end
+
+  class ValidationError < BasicError
+  end
 end

@@ -6,7 +6,9 @@ module Mixture
     class Hash < Base
       type Type::Hash
 
-      coerce_to(Type::String, &:to_s)
+      coerce_to(Type::Object, Itself)
+      coerce_to(Type::Hash, Itself)
+      coerce_to(Type::Array, :to_a)
     end
   end
 end
