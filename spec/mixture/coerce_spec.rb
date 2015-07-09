@@ -16,7 +16,7 @@ RSpec.describe Mixture::Coerce do
   end
 
   describe ".coerce" do
-    subject { Mixture::Coerce.coerce(from: from, to: to) }
+    subject { Mixture::Coerce.coerce(from, to) }
     let(:from) { Mixture::Type::Array }
     let(:to) { Mixture::Type::Hash }
     let(:array) { [%w(foo bar), %w(hello world)] }

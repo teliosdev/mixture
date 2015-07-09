@@ -9,7 +9,7 @@ module Mixture
         attr_type = Type.infer(attribute.options[:type])
         value_type = Type.infer(value)
 
-        block = Coerce.coerce(from: value_type, to: attr_type)
+        block = Coerce.coerce(value_type, attr_type)
 
         begin
           block.call(value)

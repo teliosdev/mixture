@@ -27,9 +27,9 @@ module Mixture
         end
 
         def attributes
-          self.class.attributes.map do |name, attr|
+          Hash[self.class.attributes.map do |name, attr|
             [name, instance_variable_get(attr.ivar)]
-          end.to_h
+          end]
         end
 
         def unknown_attribute(attr)

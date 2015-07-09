@@ -42,7 +42,7 @@ module Mixture
     # @param to [Mixture::Type]
     #   The type to coerce to.
     # @return [Proc{(Object) => Object}]
-    def self.coerce(from:, to:)
+    def self.coerce(from, to)
       coercers
         .fetch(from) { fail CoercionError, "No coercer for #{from}" }
         .to(to)

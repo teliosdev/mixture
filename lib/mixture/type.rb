@@ -115,11 +115,11 @@ module Mixture
 
     attr_reader :name
 
-    def initialize(type, name: nil)
+    def initialize(type, options = {})
       fail ArgumentError, "Expected a Class, got #{type.class}" unless
         type.is_a?(Class)
       @type = type
-      @name = name || @type.name
+      @name = options.fetch(:name, @type.name)
     end
 
     def to_s
