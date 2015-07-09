@@ -9,6 +9,7 @@ module Mixture
   class CoercionError < BasicError
   end
 
+  # Occurs when a validation fails.
   class ValidationError < BasicError
   end
 end

@@ -18,7 +18,7 @@ require "mixture/coerce/time"
 module Mixture
   # Handles coercion of objects.
   module Coerce
-    # Registers a coercion with the module.  This uses the {COERCERS}
+    # Registers a coercion with the module.  This uses the {.coercers}
     # constant.
     #
     # @param coercion [Mixture::Coerce::Base] The coercer to register.

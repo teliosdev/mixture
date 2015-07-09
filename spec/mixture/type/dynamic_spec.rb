@@ -3,7 +3,7 @@
 RSpec.describe Mixture::Type do
   IsAType = proc { it { is_expected.to be_a Mixture::Type } }
   describe Mixture::Type::Boolean, &IsAType
-  describe Mixture::Type::Instance, &IsAType
+  describe Mixture::Type::Nil, &IsAType
   describe Mixture::Type::Array, &IsAType
   describe Mixture::Type::Date, &IsAType
   describe Mixture::Type::DateTime, &IsAType

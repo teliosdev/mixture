@@ -1,5 +1,7 @@
 # Mixture
 
+[![Build Status](https://travis-ci.org/medcat/mixture.svg?branch=master)](https://travis-ci.org/medcat/mixture) [![Coverage Status](https://coveralls.io/repos/medcat/mixture/badge.svg?branch=master&service=github)](https://coveralls.io/github/medcat/mixture?branch=master) [![Gem Version](https://badge.fury.io/rb/mixture.svg)](http://badge.fury.io/rb/mixture)
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -12,22 +14,63 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
-
-    $ gem install mixture
-
 ## Usage
 
-TODO: Write usage instructions here
+It's simple, really.
 
-## Development
+```ruby
+module MyLibrary
+  class MyClass
+    include Mixture::Model
+  end
+end
+```
 
-To install this gem onto your local machine, run
-`bundle exec rake install`. To release a new version, update the
-version number in `version.rb`, and then run
-`bundle exec rake release`, which will create a git tag for the
-version, push git commits and tags, and push the `.gem` file to
-[rubygems.org](https://rubygems.org).
+This provides a few simple things.  First off, it provides the
+`.attribute` class method.  The attribute class method allows you to
+define an attribute on your class.  Attributes use the instance
+variables just like `attr_reader`/`attr_writer` do - but it also
+allows coercion on assignment, as well.  Defining an attribute is as
+simple as `attribute :name`.  This provides the `:name` and `:name=`
+methods on the instance.
+
+You also get access to the `#attributes=`, `#attributes`, and
+`#attribute` instance methods.  The first group assigns attributes,
+running it through any update callbacks defined.  The second retrieves
+the attributes on the instance, even if they weren't assigned.  The
+last provides easy get/set functionality.
+
+If you want to take advantage of the coercion abilities, just add a
+`:type` key to the options for the attribute:
+
+```ruby
+module MyLibrary
+  class MyClass
+    include Mixture::Model
+
+    attribute :name, type: String
+  end
+end
+```
+
+This will automagically cause `name` to be coerced to a string on
+assignment.
+
+For validation, use the `.validate` class method:
+
+```ruby
+module MyLibrary
+  class MyClass
+    include Mixture::Model
+    attribute :name, type: String
+    validate :name, format: /^.{3,20}$/
+  end
+end
+```
+
+Unfortunately, the only validators in Mixture are
+`:format`/`:match` and `:presence`.  But it's easy for you to add
+a validator!
 
 ## Contributing
 

@@ -6,6 +6,10 @@ module Mixture
     class Object < Base
       type Type::Object
 
+      # Tries a set of methods on the object, before failing with a
+      # coercion error.
+      #
+      # @return [Proc{(Symbol) => Proc{(Object) => Object}}]
       TryMethods = proc do |*methods|
         proc do |value|
           method = methods.find { |m| value.respond_to?(m) }
