@@ -10,7 +10,15 @@ module Mixture
       include Enumerable
       include Comparable
 
-      delegate [:each, :<=>] => :attributes
+      # The methods that are mapped directly to the {#to_hash} method.
+      #
+      # @return [Array<Symbol>]
+      MAPPED_METHODS = %w(
+        each <=> keys values each_key each_value has_value? value?
+        size length empty? each_pair
+      ).map(&:intern)
+
+      delegate MAPPED_METHODS => :attributes
 
       # Alias for {Attributable::InstanceMethods#attribute}.
       #
@@ -27,6 +35,13 @@ module Mixture
       def []=(key, value)
         attribute(key.to_s.intern, value)
       end
+      alias_method :store, :[]=
+
+      # (see Attributable::InstanceMethods#attributes)
+      def to_hash
+        attributes
+      end
+      alias_method :to_h, :to_hash
 
       # Checks for an attribute with the given name.
       #
@@ -35,6 +50,7 @@ module Mixture
       def key?(key)
         self.class.attributes.key?(key.to_s.intern)
       end
+      alias_method :has_key?, :key?
 
       # @overload fetch(key)
       #   Performs a fetch.  This acts just like Hash's `fetch`.
@@ -65,11 +81,11 @@ module Mixture
       #   @yieldreturn [Object] Return value of the method.
       #   @return [Object] The attribute's value, or the block's
       #     value instead.
-      def fetch(key, default = Unknown)
+      def fetch(key, default = Undefined)
         case
         when key?(key.to_s.intern) then attribute(key.to_s.intern)
         when block_given?          then yield(key.to_s.intern)
-        when default != Unknown    then default
+        when default != Undefined  then default
         else fail KeyError, "Undefined attribute #{key.to_s.intern}"
         end
       end

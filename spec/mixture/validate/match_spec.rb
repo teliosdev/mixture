@@ -28,4 +28,13 @@ RSpec.describe Mixture::Validate::Match do
         .to_not raise_error
     end
   end
+
+  context "with an unmatchable value" do
+    let(:value) { BasicObject.new }
+
+    it "raises an error" do
+      expect { subject.validate(record, attribute, value) }
+        .to raise_error(Mixture::ValidationError)
+    end
+  end
 end
