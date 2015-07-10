@@ -49,7 +49,7 @@ RSpec.describe Mixture::Validate::Length do
   end
 
   context "with a non-length value" do
-    let(:value) { Set.new }
+    let(:value) { 1.0 }
 
     it "raises an error" do
       expect { subject.validate(record, attribute, value) }
@@ -97,6 +97,14 @@ RSpec.describe Mixture::Validate::Length do
       let(:options) { { in: 5..20 } }
       it "creates a range" do
         expect(subject.acceptable).to eq(5..20)
+      end
+    end
+
+    context "with no usable keys" do
+      let(:options) { { hello: "world" } }
+      it "raises an error" do
+        expect { subject.acceptable }
+          .to raise_error(Mixture::ValidationError)
       end
     end
   end
