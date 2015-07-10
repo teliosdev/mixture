@@ -12,7 +12,8 @@ module Mixture
       # @return (see Base#validate)
       def validate(record, attribute, value)
         super
-        error("Value isn't in the given set") unless @options.includes?(value)
+        error("Value isn't in the given set") unless
+          @options[:in].include?(value)
       end
     end
   end

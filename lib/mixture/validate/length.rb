@@ -14,10 +14,8 @@ module Mixture
       # @return [void]
       def validate(record, attribute, value)
         super
-        error("Length is not acceptable") unless acceptable.includes?(length)
+        error("Length is not acceptable") unless acceptable.cover?(length)
       end
-
-      private
 
       # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
@@ -100,9 +98,9 @@ module Mixture
       #   the value.
       def length
         case
-        when value.responds_to?(:size)   then value.size
-        when value.responds_to?(:length) then value.length
-        when value.respond_to?(:count)   then value.count
+        when @value.respond_to?(:size)   then @value.size
+        when @value.respond_to?(:length) then @value.length
+        when @value.respond_to?(:count)   then @value.count
         else error("Value isn't countable")
         end
       end
