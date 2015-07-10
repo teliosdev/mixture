@@ -43,7 +43,8 @@ RSpec.describe Mixture::Validate::Length do
     let(:options) { nil }
 
     it "raises an error" do
-      expect { subject.acceptable }.to raise_error
+      expect { subject.acceptable }
+        .to raise_error(Mixture::ValidationError)
     end
   end
 
@@ -52,7 +53,7 @@ RSpec.describe Mixture::Validate::Length do
 
     it "raises an error" do
       expect { subject.validate(record, attribute, value) }
-        .to raise_error
+        .to raise_error(Mixture::ValidationError)
     end
   end
 
@@ -98,7 +99,5 @@ RSpec.describe Mixture::Validate::Length do
         expect(subject.acceptable).to eq(5..20)
       end
     end
-
   end
-
 end
