@@ -26,12 +26,11 @@ module Mixture
     end
 
     require "mixture/validate/base"
+    require "mixture/validate/exclusion"
+    require "mixture/validate/inclusion"
+    require "mixture/validate/length"
     require "mixture/validate/match"
     require "mixture/validate/presence"
-
-    register :match, Match
-    register :format, Match
-    register :presence, Presence
 
     # Performs a validation on the attribute.  It loops through the
     # validation requirements on the attribute, and runs each

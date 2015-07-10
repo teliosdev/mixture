@@ -4,6 +4,8 @@ module Mixture
   module Validate
     # Checks that a value matches.
     class Match < Base
+      register_as :match
+      register_as :format
       # Performs the validation.
       #
       # @param (see Base#validate)

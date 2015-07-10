@@ -68,9 +68,52 @@ module MyLibrary
 end
 ```
 
-Unfortunately, the only validators in Mixture are
-`:format`/`:match` and `:presence`.  But it's easy for you to add
-a validator!
+Some validators are available by default:
+
+- `:exclusion` - Validates that the value for the attribute is not
+  within a given set of values.
+- `:inclusion` - Validates that the value for the attribute _is_
+  within a given set of values.
+- `:length` - Validates that the value for the attribute is within a
+  certain length.
+- `:match` - Validates that the value for the attribute matches a
+  regular expression.  This is also known as `:format`.
+- `:presence` - Validates that the value is not nil and isn't empty
+  (by checking for `#empty?`).
+
+Adding a validator is simple:
+
+```ruby
+module MyLibrary
+  class MyValidator < Mixture::Validate::Base
+    # This registers it with Mixture, so it can be used within a
+    # `validate` call.
+    register_as :my_validator
+
+    def validate(record, attribute, value)
+      # this sets instance variables mapping the above arguments.
+      super
+      my_super_awesome_validation
+    end
+  end
+end
+```
+
+Adding a coercer is also simple:
+
+```ruby
+module MyLibrary
+  module Coerce
+    class MyObject < Mixture::Coerce::Base
+      type Mixture::Type[MyLibrary::MyObject]
+
+      coerce_to(Mixture::Type::Array) do |value|
+        value.to_a
+      end
+    end
+  end
+end
+```
 
 ## Contributing
 

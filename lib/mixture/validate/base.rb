@@ -7,6 +7,15 @@ module Mixture
     #
     # @abstract
     class Base
+      # Registers this validator as the given name.
+      #
+      # @see Validate.register
+      # @param name [Symbol] The name of the validator.
+      # @return [void]
+      def self.register_as(name)
+        Validate.register(name, self)
+      end
+
       # Initialize the validator.
       #
       # @param options [Hash] The options for the validator.

@@ -4,6 +4,7 @@ module Mixture
   module Validate
     # Checks that a value is present.
     class Presence < Base
+      register_as :presence
       # Performs the validation.
       #
       # @param (see Base#validate)
