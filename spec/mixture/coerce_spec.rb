@@ -18,7 +18,7 @@ RSpec.describe Mixture::Coerce do
   describe ".perform" do
     subject { Mixture::Coerce.perform(type, value) }
     let(:type) { Mixture::Types::Array[Mixture::Types::Integer] }
-    let(:value) { ["1", "2", "3"] }
+    let(:value) { %w(1 2 3) }
 
     it { is_expected.to be_a Array }
     it "returns the coerced value" do

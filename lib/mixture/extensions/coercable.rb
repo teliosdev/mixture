@@ -7,6 +7,7 @@ module Mixture
       # Performs the coercion for the attribute and the value.
       # It is used in a `:update` callback.
       #
+      # @see Coerce.perform
       # @param attribute [Attribute] The attribute
       # @param value [Object] The new value.
       # @return [Object] The new new value.

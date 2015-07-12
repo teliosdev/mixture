@@ -2,6 +2,8 @@
 
 module Mixture
   module Types
+    # A class type.  This can be subtyped, and is subtyped for
+    # non-primitive classes.
     class Class < Object
       options[:primitive] = ::Class
       options[:noinfer]   = true

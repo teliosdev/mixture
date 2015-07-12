@@ -2,6 +2,7 @@
 
 module Mixture
   module Types
+    # A string.
     class String < Object
       options[:primitive] = ::String
       options[:method] = :to_string

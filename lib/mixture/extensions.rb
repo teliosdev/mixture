@@ -1,5 +1,10 @@
 # encoding: utf-8
 
+require "mixture/extensions/attributable"
+require "mixture/extensions/coercable"
+require "mixture/extensions/hashable"
+require "mixture/extensions/validatable"
+
 module Mixture
   # All of the extensions of mixture.  Handles registration of
   # extensions, so that extensions can be referend by a name instead
@@ -32,14 +37,15 @@ module Mixture
       @_extensions ||= {}
     end
 
-    require "mixture/extensions/attributable"
-    require "mixture/extensions/coercable"
-    require "mixture/extensions/hashable"
-    require "mixture/extensions/validatable"
-
-    register :attribute, Attributable
-    register :coerce, Coercable
-    register :hash, Hashable
-    register :validate, Validatable
+    # Finalizes the extension module.  It registers the extensions in
+    # Mixture.
+    #
+    # @return [void]
+    def self.finalize
+      register :attribute, Attributable
+      register :coerce, Coercable
+      register :hash, Hashable
+      register :validate, Validatable
+    end
   end
 end

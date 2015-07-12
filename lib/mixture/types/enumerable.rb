@@ -2,6 +2,7 @@
 
 module Mixture
   module Types
+    # An enumerable.  This is any value that inherits `Enumerable`.
     class Enumerable < Object
       options[:primitive] = ::Enumerable
       constraint do |value|

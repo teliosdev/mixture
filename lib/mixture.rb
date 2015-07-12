@@ -27,8 +27,13 @@ module Mixture
   # @return [Proc{(Object) => Object}]
   Itself = proc { |value| value }
 
+  # Finalizes all of the Mixture modules.
+  #
+  # @return [void]
   def self.finalize
     Mixture::Coerce.finalize
+    Mixture::Extensions.finalize
+    nil
   end
 
   require "mixture/version"

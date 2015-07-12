@@ -7,6 +7,7 @@ module Mixture
       type Types::Array
 
       coerce_to(Types::Object, Itself)
+
       coerce_to(Types::Array) do |value, type|
         member = type.options.fetch(:members).first
         value.map { |e| Coerce.perform(member, e) }

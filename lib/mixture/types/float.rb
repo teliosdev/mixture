@@ -2,6 +2,7 @@
 
 module Mixture
   module Types
+    # A float.  Not much to say here.
     class Float < Numeric
       options[:primitive] = ::Float
       options[:method] = :to_float

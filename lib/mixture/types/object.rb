@@ -2,6 +2,9 @@
 
 module Mixture
   module Types
+    # An object.  This adds the basic constraints all types (that
+    # inherit from Object) have; i.e., it must be an object, and
+    # it must be the type's primitive.
     class Object < Type
       options[:primitive] = ::Object
       options[:method] = :to_object

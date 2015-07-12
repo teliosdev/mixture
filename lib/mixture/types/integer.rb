@@ -2,6 +2,7 @@
 
 module Mixture
   module Types
+    # An integer.  Not much to say here.
     class Integer < Numeric
       options[:primitive] = ::Integer
       options[:method] = :to_integer
