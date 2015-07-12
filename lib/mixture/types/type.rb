@@ -118,16 +118,16 @@ module Mixture
       #
       # @return [String]
       def self.inspect
+        to_s
+      end
+
+      # (see .inspect)
+      def self.to_s
         if anonymous? && options.key?(:name)
           options[:name]
         else
           super
         end
-      end
-
-      # (see .inspect)
-      def self.to_s
-        inspect
       end
 
       # This is used to determine if a specific object is this type.
