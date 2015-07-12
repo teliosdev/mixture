@@ -80,8 +80,8 @@ module Mixture
     # @return [Mixture::Types::Type] The inferred type.
     def self.infer_type(object)
       case object
-      when ::Array then Array[infer(object.first)]
-      when ::Set   then Set[infer(object.first)]
+      when ::Array then Array[object.first]
+      when ::Set   then Set[object.first]
       else types.reverse.find { |type| type.matches?(object) }
       end
     end

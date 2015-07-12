@@ -36,7 +36,8 @@ RSpec.describe Mixture::Types do
 
     context "with an array" do
       let(:type) { Array[String] }
-      it { is_expected.to eq Mixture::Types::Array[String] }
+      it { is_expected.to be Mixture::Types::Array[Mixture::Types::String] }
+      it { is_expected.to be Mixture::Types::Array[String] }
     end
   end
 end

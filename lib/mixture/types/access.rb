@@ -15,8 +15,9 @@ module Mixture
       # @param subs [Object] The subtypes to use.
       # @return [Class] The new subtype.
       def [](*subs)
-        options[:types].fetch([self, subs]) do
-          create(subs)
+        inferred = infer_subs(subs)
+        options[:types].fetch([self, inferred]) do
+          create(inferred)
         end
       end
 
@@ -27,18 +28,25 @@ module Mixture
       # options, it doesn't infer the type of each subtype; otherwise,
       # it does.
       #
-      # @param subs [Array<Object>] The subtypes.
+      # @param inferred [Array<Object>] The subtypes.
       # @return [Class] The new subtype.
-      def create(subs)
+      def create(inferred)
         subtype = ::Class.new(self)
-        members = if options[:noinfer]
-                    subs
-                  else
-                    subs.map { |sub| Types.infer(sub) }
-                  end
-        name    = "#{inspect}[#{members.join(', ')}]"
-        subtype.options.merge!(members: members, name: name)
-        options[:types][[self, subs]] = subtype
+        name    = "#{inspect}[#{inferred.join(', ')}]"
+        subtype.options.merge!(members: inferred, name: name)
+        options[:types][[self, inferred]] = subtype
+      end
+
+      # Infers the subtypes, if the `:noinfer` option is not set.
+      #
+      # @param subs [Array<Object>] The subtypes to infer.
+      # @return [Array<Object>] The inferred subtypes.
+      def infer_subs(subs)
+        if options[:noinfer]
+          subs
+        else
+          subs.map { |sub| Types.infer(sub) }
+        end
       end
     end
   end

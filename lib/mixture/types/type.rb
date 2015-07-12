@@ -66,40 +66,13 @@ module Mixture
         end
       end
 
-      # Determines if this type is equal to another type.  This is
-      # used by Ruby's hash, and is used to make an anonymous type
-      # equal to its supertype (e.g.
-      # `Types::Array[Types::Integer] == Types::Array`), mainly for
-      # coercion.
+      # A list of types that this type can inherit coercion behavior
+      # from.  For example, a collection can be coerced into an
+      # array or a set.
       #
-      # @param other [Object]
-      # @return [Boolean]
-      def self.eql?(other)
-        if anonymous?
-          superclass == other
-        elsif other.respond_to?(:anonymous?) && other.anonymous?
-          other.superclass.eql?(self)
-        else
-          super
-        end
-      end
-
-      # (see .eql?)
-      def self.==(other)
-        eql?(other)
-      end
-
-      # Used by ruby's Hash, this determines the hash of the type.  If
-      # this is anonymous, it uses its supertype's hash.
-      #
-      # @see .eql?
-      # @return [Numeric]
-      def self.hash
-        if anonymous?
-          superclass.hash
-        else
-          super
-        end
+      # @return [Array<Class>]
+      def self.inheritable
+        ancestors - Type.ancestors
       end
 
       # If this class is anonymous.  This is counting on the fact that

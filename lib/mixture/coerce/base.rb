@@ -125,12 +125,13 @@ module Mixture
       # @raise [CoercionError] If it could not find the coercion.
       # @return [Proc{(Object) => Object}]
       def to(type)
-        method_name = self.class.coercions.fetch(type) do
-          fail CoercionError, "Undefined coercion #{self.class.type} " \
-            "=> #{type}" unless method_name
-        end
+        coercions = self.class.coercions
+        coercable = type.inheritable
+                    .find { |ancestor| coercions.key?(ancestor) }
+        fail CoercionError, "Undefined coercion #{self.class.type} " \
+          "=> #{type}" unless coercable
 
-        public_send(method_name)
+        public_send(coercions[coercable])
       end
     end
   end

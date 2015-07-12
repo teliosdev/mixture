@@ -43,9 +43,9 @@ module Mixture
     #   The type to coerce to.
     # @return [Proc{(Object, Mixture::Types::Object) => Object}]
     def self.coerce(from, to)
-      coercers
-        .fetch(from) { fail CoercionError, "No coercer for #{from}" }
-        .to(to)
+      type = from.inheritable.find { |ancestor| coercers.key?(ancestor) }
+      fail CoercionError, "No coercer for #{from}" unless type
+      coercers[type].to(to)
     end
 
     # Performs the actual coercion, since blocks require a value and
