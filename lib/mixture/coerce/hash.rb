@@ -15,14 +15,6 @@ module Mixture
            Coerce.perform(members[1], v)]
         end]
       end
-
-      coerce_to(Types::Array) do |value, type|
-        members = type.options.fetch(:members)
-        value.map do |k, v|
-          [Coerce.perform(members[0], k),
-           Coerce.perform(members[1], v)]
-        end
-      end
     end
   end
 end
