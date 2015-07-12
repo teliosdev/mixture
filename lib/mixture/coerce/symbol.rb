@@ -4,11 +4,11 @@ module Mixture
   module Coerce
     # Handles coercion of the Numeric class.
     class Symbol < Base
-      type Type::Symbol
+      type Types::Symbol
 
-      coerce_to(Type::Object, Itself)
-      coerce_to(Type::String, :to_s)
-      coerce_to(Type::Symbol, Itself)
+      coerce_to(Types::Object, Itself)
+      coerce_to(Types::String, :to_s)
+      coerce_to(Types::Symbol, Itself)
     end
   end
 end

@@ -31,7 +31,26 @@ module Mixture
       #
       # @return [Hash{Mixture::Type => Symbol}]
       def self.coercions
-        @_coercions ||= {}
+        @_coercions ||= ThreadSafe::Hash.new
+      end
+
+      # This is a method that's called by ruby interally.  We're going
+      # to use it to hook into the coercions, to allow a class
+      # coercion.
+      #
+      # @param base [Class] A subclass.
+      # @return [void]
+      def self.inherited(base)
+        super # for Singleton
+        base.coerce_to(Types::Class) do |value, type|
+          member = type.options.fetch(:members).first
+          if member.respond_to?(:coerce) then member.coerce(value)
+          elsif member.respond_to?(:new) then member.new(value)
+          else
+            fail CoercionError, "Expected #{member} to " \
+                 "respond to #coerce, #new"
+          end
+        end
       end
 
       # This is a DSL for the class itself.  It essentially defines a
@@ -41,12 +60,13 @@ module Mixture
       #   This is a DSL for the class itself.  It essentially defines
       #   a method to perform the coercion of the given type.
       #
-      #   @param to [Mixture::Type] The type to coerce to.
-      #   @yield [value] The block is called with the value to coerce
-      #     when coercion needs to happen.  Note that the block is not
-      #     used as the body of the method - the method returns the
-      #     block.
+      #   @param to [Mixture::Types::Type] The type to coerce to.
+      #   @yield [value, type] The block is called with the value to
+      #     coerce when coercion needs to happen.  Note that the
+      #     block is not used as the body of the method - the method
+      #     returns the block.
       #   @yieldparam value [Object] The object to coerce.
+      #   @yieldparam type [Mixture::Types::Type] The destination type.
       #   @yieldreturn [Object] The coerced value.
       #   @return [void]
       #
@@ -54,27 +74,43 @@ module Mixture
       #   This is a DSL for the class itself.  It essentially defines
       #   a method to perform the coercion of the given type.
       #
-      #   @param to [Mixture::Type] The type to coerce to.
-      #   @param value [Proc] The block that is called with the value
-      #     for coercion.  This block is returned by the defined
-      #     coercion method.
+      #   @param to [Mixture::Types::Type] The type to coerce to.
+      #   @param value [Proc, Symbol] The block that is called with
+      #     the value for coercion.  This block is returned by
+      #     the defined coercion method.  If it's a symbol, it's
+      #     turned into a block.  Note that this doesn't use
+      #     Symbol#to_proc; it uses a similar block that ignores
+      #     the excess paramters.
       #   @return [void]
+      def self.coerce_to(to, data = Undefined, &block)
+        fail ArgumentError, "Expected Mixture::Types::Type, got #{to}" unless
+          to <= Mixture::Types::Type
+
+        body = data_block(data, &block)
+        coercions[to] = to.options[:method]
+        define_method(to.options[:method]) { body }
+      end
+
+      # Turns a data/block given to {.coerce_to} into a block worthy
+      # of a body for a method.
       #
-      def self.coerce_to(to, value = Undefined, &block)
-        fail ArgumentError, "Expected Mixture::Type, got #{to.class}" unless
-          to.is_a?(Mixture::Type)
-
-        body = case
-               when value != Undefined
-                 value.to_proc
-               when block_given?
-                 block
-               else
-                 fail ArgumentError, "Expected a block"
-               end
-
-        coercions[to] = to.method_name
-        define_method(to.method_name) { body }
+      # @param data [Proc, Symbol] A proc/symbol to be used for a
+      #   method.
+      # @yield (see .coerce_to)
+      # @yieldparam (see .coerce_to)
+      # @yieldreturn (see .coerce_to)
+      # @return [void]
+      def self.data_block(data, &block)
+        case
+        when data.is_a?(::Symbol)
+          proc { |value| value.public_send(data) }
+        when data.is_a?(::Proc)
+          data
+        when block_given?
+          block
+        else
+          fail ArgumentError, "Expected a block, got #{data.inspect}"
+        end
       end
 
       # (see #to)
@@ -90,8 +126,8 @@ module Mixture
       # @return [Proc{(Object) => Object}]
       def to(type)
         method_name = self.class.coercions.fetch(type) do
-          fail CoercionError,
-               "Undefined coercion of #{self.class.type} => #{type}"
+          fail CoercionError, "Undefined coercion #{self.class.type} " \
+            "=> #{type}" unless method_name
         end
 
         public_send(method_name)

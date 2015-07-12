@@ -36,27 +36,30 @@ module Mixture
       @list.callbacks[:update].inject(value) { |a, e| e.call(self, a) }
     end
 
+    # @!attribute [r] ivar
     # The instance variable for this attribute.
     #
-    # @example
+    # @example Retrieve the instance variable.
     #   attribute.ivar # => :@name
     # @return [Symbol]
     def ivar
       @_ivar ||= :"@#{@name}"
     end
 
+    # @!attribute [r] getter
     # The getter method for this attribute.
     #
-    # @example
+    # @example Retrieve the getter.
     #   attribute.getter # => :name
     # @return [Symbol]
     def getter
       @name
     end
 
+    # @!attribute [r] setter
     # The setter method for this attribute.
     #
-    # @example
+    # @example Retrieve the setter.
     #   attribute.setter # :name=
     # @return [Symbol]
     def setter

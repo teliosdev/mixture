@@ -4,16 +4,16 @@ module Mixture
   module Coerce
     # Handles coercion of the String class.
     class String < Base
-      type Type::String
+      type Types::String
 
-      coerce_to(Type::Object, Itself)
-      coerce_to(Type::String, :dup)
-      coerce_to(Type::Symbol, :to_sym)
-      coerce_to(Type::Integer, :to_i)
-      coerce_to(Type::Float, :to_f)
-      coerce_to(Type::Time) { |value| ::Time.parse(value) }
-      coerce_to(Type::Date) { |value| ::Date.parse(value) }
-      coerce_to(Type::DateTime) { |value| ::DateTime.parse(value) }
+      coerce_to(Types::Object, Itself)
+      coerce_to(Types::String, :dup)
+      coerce_to(Types::Symbol, :to_sym)
+      coerce_to(Types::Integer, :to_i)
+      coerce_to(Types::Float, :to_f)
+      coerce_to(Types::Time) { |value| ::Time.parse(value) }
+      coerce_to(Types::Date) { |value| ::Date.parse(value) }
+      coerce_to(Types::DateTime) { |value| ::DateTime.parse(value) }
     end
   end
 end

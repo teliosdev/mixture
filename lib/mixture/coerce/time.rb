@@ -4,16 +4,17 @@ module Mixture
   module Coerce
     # Handles coercion of the Time class.
     class Time < Base
-      type Type::Time
+      type Types::Time
 
-      coerce_to(Type::String, :to_s)
-      coerce_to(Type::Integer, :to_i)
-      coerce_to(Type::Float, :to_f)
-      coerce_to(Type::Rational, :to_r)
-      coerce_to(Type::Array, :to_a)
-      coerce_to(Type::Time, Itself)
-      coerce_to(Type::Date, :to_date)
-      coerce_to(Type::DateTime, :to_datetime)
+      coerce_to(Types::Object, Itself)
+      coerce_to(Types::String, :to_s)
+      coerce_to(Types::Integer, :to_i)
+      coerce_to(Types::Float, :to_f)
+      coerce_to(Types::Rational, :to_r)
+      coerce_to(Types::Array, :to_a)
+      coerce_to(Types::Time, Itself)
+      coerce_to(Types::Date, :to_date)
+      coerce_to(Types::DateTime, :to_datetime)
     end
   end
 end

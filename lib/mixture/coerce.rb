@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 require "mixture/coerce/base"
-require "mixture/coerce/array"
 require "mixture/coerce/date"
+require "mixture/coerce/array"
 require "mixture/coerce/datetime"
 require "mixture/coerce/float"
 require "mixture/coerce/hash"
@@ -32,24 +32,46 @@ module Mixture
     #
     # @return [Hash{Mixture::Type => Mixture::Coerce::Base}]
     def self.coercers
-      @_coercers ||= {}
+      @_coercers ||= ThreadSafe::Hash.new
     end
 
     # Returns a block that takes one argument: the value.
     #
-    # @param from [Mixture::Type]
+    # @param from [Mixture::Types::Type]
     #   The type to coerce from.
-    # @param to [Mixture::Type]
+    # @param to [Mixture::Types::Type]
     #   The type to coerce to.
-    # @return [Proc{(Object) => Object}]
+    # @return [Proc{(Object, Mixture::Types::Object) => Object}]
     def self.coerce(from, to)
       coercers
         .fetch(from) { fail CoercionError, "No coercer for #{from}" }
         .to(to)
     end
 
+    # Performs the actual coercion, since blocks require a value and
+    # type arguments.
+    #
+    # @param type [Mixture::Types::Type] The type to coerce to.
+    # @param value [Object] The value to coerce.
+    # @return [Object] The coerced value.
+    def self.perform(type, value)
+      to = Types.infer(type)
+      from = Types.infer(value)
+      block = coerce(from, to)
+
+      begin
+        block.call(value, to)
+      rescue CoercionError
+        raise
+      rescue StandardError => e
+        raise CoercionError, "#{e.class}: #{e.message}", e.backtrace
+      end
+    end
+
     # Registers the default coercions.
-    def self.load
+    #
+    # @return [void]
+    def self.finalize
       register Array
       register Date
       register DateTime
@@ -64,7 +86,5 @@ module Mixture
       register Symbol
       register Time
     end
-
-    load
   end
 end

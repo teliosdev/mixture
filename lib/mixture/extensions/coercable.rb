@@ -14,16 +14,7 @@ module Mixture
       #   running.
       def self.coerce_attribute(attribute, value)
         return value unless attribute.options[:type]
-        attr_type = Type.infer(attribute.options[:type])
-        value_type = Type.infer(value)
-
-        block = Coerce.coerce(value_type, attr_type)
-
-        begin
-          block.call(value)
-        rescue StandardError => e
-          raise CoercionError, "#{e.class}: #{e.message}", e.backtrace
-        end
+        Coerce.perform(attribute.options[:type], value)
       end
 
       # Called by Ruby when the module is included.

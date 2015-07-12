@@ -2,5 +2,9 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in mixture.gemspec
+# These are in here for reasons.
+gem "pry"
+gem "rubocop"
+gem "coveralls"
+
 gemspec
