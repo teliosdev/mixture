@@ -103,14 +103,37 @@ Adding a coercer is also simple:
 
 ```ruby
 module MyLibrary
+  module Types
+    class MyObject < Mixture::Types::Object
+      options[:primitive] = nil
+      constraint { |value| ... }
+    end
+  end
   module Coerce
     class MyObject < Mixture::Coerce::Base
-      type Mixture::Type[MyLibrary::MyObject]
+      type MyLibrary::Types::MyObject
 
-      coerce_to(Mixture::Type::Array) do |value|
+      coerce_to(Mixture::Types::Array) do |value|
         value.to_a
       end
     end
+  end
+end
+```
+
+Although the builtin coercers should do well.
+
+A more complex example:
+
+```ruby
+module MyLibrary
+  class Something
+    include Mixture::Model
+
+    attribute :name, type: String
+    attribute :files, type: Array[String]
+    attribute :authors, type: Set[Author]
+    attribute :dependencies, type: Set[Dependency]
   end
 end
 ```
