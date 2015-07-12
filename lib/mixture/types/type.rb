@@ -77,7 +77,7 @@ module Mixture
       def self.eql?(other)
         if anonymous?
           superclass == other
-        elsif other.respond_to?(:<=) && other <= Type && other.anonymous?
+        elsif other.respond_to?(:anonymous?) && other.anonymous?
           other.superclass.eql?(self)
         else
           super
