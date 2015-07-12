@@ -44,6 +44,7 @@ module Mixture
   require "mixture/coerce"
   require "mixture/validate"
   require "mixture/extensions"
+  require "mixture/model"
 
   finalize
 end
