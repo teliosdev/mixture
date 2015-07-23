@@ -1,5 +1,6 @@
 # encoding: utf-8
 
+require "set"
 require "forwardable"
 
 module Mixture
@@ -30,7 +31,7 @@ module Mixture
     def initialize
       @list = {}
       @options = {}
-      @callbacks = Hash.new { |h, k| h[k] = [] }
+      @callbacks = Hash.new { |h, k| h[k] = Set.new }
     end
 
     # Creates a new attribute with the given name and options.
