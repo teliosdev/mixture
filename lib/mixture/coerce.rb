@@ -81,6 +81,7 @@ module Mixture
       register Integer
       register Nil
       register Object
+      register Range
       register Rational
       register Set
       register String

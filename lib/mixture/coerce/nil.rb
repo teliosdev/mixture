@@ -7,6 +7,7 @@ module Mixture
       type Types::Nil
 
       coerce_to(Types::Object, Itself)
+      coerce_to(Types::Nil, Itself)
       coerce_to(Types::String) { "" }
       coerce_to(Types::Array) { [] }
       coerce_to(Types::Float) { 0.0 }
