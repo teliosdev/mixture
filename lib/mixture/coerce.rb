@@ -1,8 +1,10 @@
 # encoding: utf-8
 
+
 require "mixture/coerce/base"
-require "mixture/coerce/date"
 require "mixture/coerce/array"
+require "mixture/coerce/class"
+require "mixture/coerce/date"
 require "mixture/coerce/datetime"
 require "mixture/coerce/float"
 require "mixture/coerce/hash"

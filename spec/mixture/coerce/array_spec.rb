@@ -21,6 +21,8 @@ RSpec.describe Mixture::Coerce::Array do
   describe "#to" do
     it "loads the proper coercion" do
       expect(subject.to(Mixture::Types::Array)).to eq subject.to_array
+      expect(subject.to(Mixture::Types::Array[Mixture::Types::Integer]))
+        .to eq subject.to_array
     end
   end
 

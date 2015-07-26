@@ -7,7 +7,7 @@ module Mixture
     class Class < Object
       options[:primitive] = ::Class
       options[:noinfer]   = true
-      options[:member]    = Object
+      options[:members]   = [Object]
       options[:method]    = :to_class
       options[:types]     = ThreadSafe::Cache.new
       extend Access
