@@ -6,6 +6,7 @@ module Mixture
     # inherit from Object) have; i.e., it must be an object, and
     # it must be the type's primitive.
     class Object < Type
+      register
       options[:primitive] = ::Object
       options[:method] = :to_object
       as :object
@@ -33,6 +34,20 @@ module Mixture
         ::Object === value
         # rubocop:enable Style/CaseEquality
       end
+
+      # We can't match anything as an object that isn't an object.
+      constraint do |value|
+        # The first constraint is that the class cannot be an object.
+        # This is the same as removing this constraint on inherited
+        # classes.
+        # The second constraint is that if the class is an object,
+        # then the value's class must be object.
+        # This is so we can properly infer objects, since it's likely
+        # _someone_'s gonna throw us an object.
+        self != Object ||
+          (self == Object && value.class == ::Object)
+      end
+
       constraint { |value| value.is_a?(options[:primitive]) }
     end
   end

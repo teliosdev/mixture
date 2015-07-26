@@ -14,9 +14,14 @@ RSpec.describe Mixture::Types do
     end
 
     context "with a class" do
-      class MyClass; end
-      let(:type) { MyClass }
-      it { is_expected.to be Mixture::Types::Class[MyClass] }
+      let(:type) { MyClass = Class.new }
+      it { is_expected.to be Mixture::Types::Class[type] }
+    end
+
+    context "with an instance of a class" do
+      let(:klass) { MyClass = Class.new }
+      let(:type) { klass.new }
+      it { is_expected.to be Mixture::Types::Class[klass] }
     end
 
     context "with an object" do

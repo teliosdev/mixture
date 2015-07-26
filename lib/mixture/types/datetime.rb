@@ -5,6 +5,7 @@ module Mixture
     # A datetime type.  I don't know why Ruby has a Date, DateTime, and
     # Time type, but someone thinks we needs it.
     class DateTime < Object
+      register
       options[:primitive] = ::DateTime
       options[:method] = :to_datetime
       as :datetime

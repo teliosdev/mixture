@@ -49,9 +49,16 @@ module Mixture
       # @param sub [Class] The new subclass.
       # @return [void]
       def self.inherited(sub)
-        Types.types << sub unless sub.anonymous?
         sub.options.merge!(options)
         sub.constraints.concat(constraints)
+      end
+
+      # Registers the type.  This shouldn't be called on anonymous
+      # classes.
+      #
+      # @return [void]
+      def self.register
+        Types.types << self
       end
 
       # Checks if the given value passes all of the constraints

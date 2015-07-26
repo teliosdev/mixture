@@ -8,6 +8,7 @@ module Mixture
     # odd stuff from happening.  It can still be matched by other
     # values.
     class Boolean < Object
+      register
       options[:primitive] = nil
       as :bool, :boolean, true, false
 

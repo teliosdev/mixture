@@ -82,7 +82,10 @@ module Mixture
       case object
       when ::Array then Array[object.first]
       when ::Set   then Set[object.first]
-      else types.reverse.find { |type| type.matches?(object) }
+      when ::Hash  then Hash[object.keys.first => object.values.first]
+      else
+        types.find { |type| type.matches?(object) } ||
+          infer_class(object.class)
       end
     end
   end

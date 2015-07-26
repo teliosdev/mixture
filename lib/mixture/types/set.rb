@@ -8,6 +8,7 @@ module Mixture
     # @see Array
     # @see http://ruby-doc.org/stdlib/libdoc/set/rdoc/Set.html
     class Set < Collection
+      register
       options[:primitive] = ::Set
       options[:method] = :to_set
       as :set
