@@ -76,6 +76,7 @@ module Mixture
     # @return [void]
     def self.finalize
       register Array
+      register Class
       register Date
       register DateTime
       register Float
