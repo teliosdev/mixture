@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 RSpec.describe Mixture::Coerce::Nil do
   subject { described_class.instance }
 

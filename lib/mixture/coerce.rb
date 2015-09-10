@@ -1,6 +1,5 @@
 # encoding: utf-8
 
-
 require "mixture/coerce/base"
 require "mixture/coerce/array"
 require "mixture/coerce/class"

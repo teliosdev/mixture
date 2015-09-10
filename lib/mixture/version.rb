@@ -5,5 +5,5 @@ module Mixture
   # The current version of Mixture.
   #
   # @return [String]
-  VERSION = "0.6.0"
+  VERSION = "0.6.1"
 end

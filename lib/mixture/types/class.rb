@@ -18,7 +18,7 @@ module Mixture
         if value.is_a?(::Class)
           options.fetch(:members).first == value
         else
-          options.fetch(:members).first === value
+          options.fetch(:members).first.is_a?(value)
         end
       end
     end
