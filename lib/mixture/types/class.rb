@@ -14,11 +14,12 @@ module Mixture
       extend Access
 
       constraints.clear
+      # rubocop:disable Style/CaseEquality
       constraint do |value|
         if value.is_a?(::Class)
           options.fetch(:members).first == value
         else
-          options.fetch(:members).first.is_a?(value)
+          options.fetch(:members).first === value
         end
       end
     end
