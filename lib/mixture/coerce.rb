@@ -2,6 +2,7 @@
 
 require "mixture/coerce/base"
 require "mixture/coerce/array"
+require "mixture/coerce/boolean"
 require "mixture/coerce/class"
 require "mixture/coerce/date"
 require "mixture/coerce/datetime"
@@ -70,11 +71,15 @@ module Mixture
       end
     end
 
+    # rubocop:disable Metrics/AbcSize
+    # rubocop:disable Metrics/MethodLength
+
     # Registers the default coercions.
     #
     # @return [void]
     def self.finalize
       register Array
+      register Boolean
       register Class
       register Date
       register DateTime

@@ -4,7 +4,7 @@ module Mixture
   module Coerce
     # Handles coercion of the boolean classes.
     class Boolean < Base
-      type Types::Array
+      type Types::Boolean
 
       coerce_to(Types::Object, Itself)
       coerce_to(Types::Boolean, Itself)

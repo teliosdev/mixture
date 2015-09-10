@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mixture (0.6.1)
+    mixture (0.6.2)
       thread_safe (~> 0.3)
 
 GEM
