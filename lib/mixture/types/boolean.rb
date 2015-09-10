@@ -10,6 +10,7 @@ module Mixture
     class Boolean < Object
       register
       options[:primitive] = nil
+      options[:method] = :to_boolean
       as :bool, :boolean, true, false
 
       constraints.clear

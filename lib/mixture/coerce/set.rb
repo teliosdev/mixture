@@ -7,6 +7,7 @@ module Mixture
       type Types::Set
 
       coerce_to(Types::Object, Itself)
+      coerce_to(Types::Boolean, :any?)
 
       coerce_to(Types::Set) do |value, type|
         member = type.options.fetch(:members).first

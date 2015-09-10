@@ -22,6 +22,7 @@ module Mixture
       end
 
       coerce_to(Types::Object, Itself)
+      coerce_to(Types::Boolean, Prove)
       coerce_to(Types::Array, TryMethods[:to_a, :to_ary, :to_array])
       coerce_to(Types::Date, TryMethods[:to_date])
       coerce_to(Types::DateTime, TryMethods[:to_datetime])

@@ -27,6 +27,16 @@ module Mixture
   # @return [Proc{(Object) => Object}]
   Itself = proc { |value| value }
 
+  # A proc that returns true.
+  #
+  # @return [Proc{() => true}]
+  Prove = proc { true }
+
+  # A proc that returns false.
+  #
+  # @return [Proc{() => false}]
+  Refute = proc { false }
+
   # Finalizes all of the Mixture modules.
   #
   # @return [void]

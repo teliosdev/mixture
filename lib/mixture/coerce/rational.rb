@@ -8,6 +8,7 @@ module Mixture
 
       coerce_to(Types::Object, Itself)
       coerce_to(Types::Rational, Itself)
+      coerce_to(Types::Boolean) { |value| !value.zero? }
       coerce_to(Types::Time) { |value| ::Time.at(value) }
       coerce_to(Types::Date) { |value| ::Time.at(value).to_date }
       coerce_to(Types::DateTime) { |value| ::Time.at(value).to_datetime }

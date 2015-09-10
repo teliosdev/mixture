@@ -7,6 +7,7 @@ module Mixture
       type Types::Hash
 
       coerce_to(Types::Object, Itself)
+      coerce_to(Types::Boolean, :any?)
 
       coerce_to(Types::Hash) do |value, type|
         members = type.options.fetch(:members)

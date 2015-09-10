@@ -7,6 +7,7 @@ RSpec.describe Mixture::Coerce::Object do
   it "attempts coercion" do
     expect(subject.to_integer).to be_a Proc
     expect(subject.to_integer.call(value)).to be_an Integer
+    expect(subject.to_boolean.call(value)).to be true
   end
 
   it "tries multiple methods" do
