@@ -58,8 +58,11 @@ module Mixture
     attr_reader :callbacks
 
     # The parent of this attribute list.  This is "merged" into this attribute
-    # list.
-    attr_reader :parent
+    # list.  This shouldn't be set since it is automatically assumed; however,
+    # sometimes it can be assumed wrong.
+    #
+    # @return [AttributeList, nil]
+    attr_accessor :parent
 
     # Initializes the attribute list.
     #
