@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 RSpec.describe Mixture::Extensions::Attributable do
   # A test model.
@@ -6,6 +7,10 @@ RSpec.describe Mixture::Extensions::Attributable do
     include Mixture::Extensions::Attributable
 
     attribute :name, some: :option
+  end
+
+  inherited = Class.new(model) do
+    attribute :foo
   end
 
   subject { model.new }
@@ -47,6 +52,23 @@ RSpec.describe Mixture::Extensions::Attributable do
       subject.attributes = attributes
       expect(subject.name).to be :bar
       model.attributes.callbacks[:update] = []
+    end
+  end
+
+  describe "with inheritance" do
+    subject { inherited }
+    describe ".attributes" do
+      subject { inherited.attributes }
+
+      it { is_expected.to have_key(:name) }
+      it { is_expected.to have_key(:foo) }
+
+      context "on the parent" do
+        subject { model.attributes }
+
+        it { is_expected.to have_key(:name) }
+        it { is_expected.to_not have_key(:foo) }
+      end
     end
   end
 end

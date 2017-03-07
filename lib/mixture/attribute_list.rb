@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 require "set"
 require "forwardable"
@@ -13,7 +14,36 @@ module Mixture
     # If it quacks like a duck...
     include Comparable
     # Then it must be a duck.
-    delegate [:fetch, :[], :[]=, :key?, :each, :<=>] => :@list
+    delegate [:<=>, :[]=, :to_h] => :@list
+
+    # @!method fetch(key, value = Undefined, &block)
+    #   Fetches the given key from the attribute list.  If the current attribute
+    #   list does not have the key, it passes it up to the parent, if there is
+    #   one.  If there is no parent, it behaves as normal.
+    #
+    #   @param key [::Symbol]
+    #   @param value [::Object]
+    #   @return [Attribute]
+    # @!method [](key)
+    #   Looks up the given key.  If the current attribute list does not have the
+    #   key, it passes it up to the parent, if there is one.  Otherwise, it
+    #   returns the default value for the list (`nil`).
+    #
+    #   @param key [::Symbol]
+    #   @return [Attribute]
+    # @!method key?(key)
+    #   Returns if the attribute exists.  If it doesn't exist on this list,
+    #   it passes it up to the parent.
+    #
+    #   @param key [::Symbol]
+    #   @return [::Boolean]
+    # @!method each(&block)
+    #   Iterates over the attribute list.  If there is a parent, the current
+    #   attribute list is merged into the parent, then iterated over; otherwise,
+    #   it iterates over the current.
+    #
+    #   @return [void]
+    delegate [:fetch, :[], :key?, :keys, :values, :each, :has_key?] => :with_parent
 
     # Returns a set of options used for the attributes.  This isn't
     # used at the moment.
@@ -27,10 +57,18 @@ module Mixture
     # @return [Hash{Symbol => Array<Proc>}]
     attr_reader :callbacks
 
+    # The parent of this attribute list.  This is "merged" into this attribute
+    # list.
+    attr_reader :parent
+
     # Initializes the attribute list.
-    def initialize
+    #
+    # @param parent [AttributeList] The parent {AttributeList}.  This is used
+    #   primarily for inheritance.
+    def initialize(parent = nil)
       @list = {}
       @options = {}
+      @parent = parent
       @callbacks = Hash.new { |h, k| h[k] = Set.new }
     end
 
@@ -41,6 +79,12 @@ module Mixture
     # @return [Attribute]
     def create(name, options = {})
       @list[name] = Attribute.new(name, self, options)
+    end
+
+  protected
+
+    def with_parent
+      @parent ? @list.merge(@parent.with_parent) : @list
     end
   end
 end

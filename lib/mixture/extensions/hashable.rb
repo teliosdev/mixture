@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 require "forwardable"
 
@@ -82,10 +83,9 @@ module Mixture
       #   @return [Object] The attribute's value, or the block's
       #     value instead.
       def fetch(key, default = Undefined)
-        case
-        when key?(key.to_s.intern) then attribute(key.to_s.intern)
-        when block_given?          then yield(key.to_s.intern)
-        when default != Undefined  then default
+        if key?(key.to_s.intern) then attribute(key.to_s.intern)
+        elsif block_given?          then yield(key.to_s.intern)
+        elsif default != Undefined  then default
         else fail KeyError, "Undefined attribute #{key.to_s.intern}"
         end
       end

@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 module Mixture
   module Validate
@@ -15,7 +16,7 @@ module Mixture
         error("Value is empty") if empty?
       end
 
-      private
+    private
 
       # Determins if the given value is empty.  If it's not nil,
       # and it responds to `empty?`, it returns the value of `empty?`;

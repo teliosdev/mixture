@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 module Mixture
   module Extensions
@@ -16,8 +17,10 @@ module Mixture
         def attribute(name, options = {})
           name = name.to_s.intern
           attr = attributes.create(name, options)
-          define_method(attr.getter) {     attribute(name)    }
-          define_method(attr.setter) { |v| attribute(name, v) }
+          define_method(attr.getter) {     attribute(name)    } unless
+            options[:wo] || options[:write_only]
+          define_method(attr.setter) { |v| attribute(name, v) } unless
+            options[:ro] || options[:read_only]
           attr
         end
 
@@ -26,7 +29,12 @@ module Mixture
         # @see AttributeList
         # @return [AttributeList]
         def attributes
-          @_attributes ||= AttributeList.new
+          return @_attributes if @_attributes
+          available = ancestors[1..-1]
+                      .select { |c| c.respond_to?(:attributes) }
+                      .first
+          parent = available ? available.attributes : nil
+          @_attributes = AttributeList.new(parent)
         end
       end
 

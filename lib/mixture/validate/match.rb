@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 module Mixture
   module Validate
@@ -16,7 +17,7 @@ module Mixture
         error("Value does not match") unless match?
       end
 
-      private
+    private
 
       # Checks if the value matches the given matcher.  It uses the
       # `=~` operator.  If it fails (i.e. raises an error), it returns

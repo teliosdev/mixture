@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 module Mixture
   module Coerce
@@ -13,11 +14,8 @@ module Mixture
       TryMethods = proc do |*methods|
         proc do |value|
           method = methods.find { |m| value.respond_to?(m) }
-          if method
-            value.public_send(method)
-          else
-            fail CoercionError, "Could not coerce #{value.class}"
-          end
+          fail CoercionError, "Could not coerce #{value.class}" unless method
+          value.public_send(method)
         end
       end
 

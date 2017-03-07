@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 require "singleton"
 
@@ -101,12 +102,11 @@ module Mixture
       # @yieldreturn (see .coerce_to)
       # @return [void]
       def self.data_block(data, &block)
-        case
-        when data.is_a?(::Symbol)
+        if data.is_a?(::Symbol)
           proc { |value| value.public_send(data) }
-        when data.is_a?(::Proc)
+        elsif data.is_a?(::Proc)
           data
-        when block_given?
+        elsif block_given?
           block
         else
           fail ArgumentError, "Expected a block, got #{data.inspect}"
@@ -127,9 +127,11 @@ module Mixture
       def to(type)
         coercions = self.class.coercions
         coercable = type.inheritable
-                    .find { |ancestor| coercions.key?(ancestor) }
-        fail CoercionError, "Undefined coercion #{self.class.type} " \
-          "=> #{type}" unless coercable
+                        .find { |ancestor| coercions.key?(ancestor) }
+        unless coercable
+          fail CoercionError, "Undefined coercion #{self.class.type} " \
+            "=> #{type}"
+        end
 
         public_send(coercions[coercable])
       end

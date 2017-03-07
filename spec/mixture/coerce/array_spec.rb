@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 RSpec.describe Mixture::Coerce::Array do
   subject { Mixture::Coerce::Array.instance }

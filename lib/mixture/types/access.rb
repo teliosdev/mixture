@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 module Mixture
   module Types
@@ -21,7 +22,7 @@ module Mixture
         end
       end
 
-      private
+    private
 
       # Actually creates the subtype.  This should never be called
       # outside of {.[]}.  If `:noinfer` is set in the supertype's

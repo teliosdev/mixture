@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 require "mixture/coerce/base"
 require "mixture/coerce/array"
@@ -65,13 +66,11 @@ module Mixture
       begin
         block.call(value, to)
       rescue CoercionError
-        raise
+        fail
       rescue StandardError => e
-        raise CoercionError, "#{e.class}: #{e.message}", e.backtrace
+        fail CoercionError, "#{e.class}: #{e.message}", e.backtrace
       end
     end
-
-    # rubocop:disable Metrics/AbcSize
     # rubocop:disable Metrics/MethodLength
 
     # Registers the default coercions.

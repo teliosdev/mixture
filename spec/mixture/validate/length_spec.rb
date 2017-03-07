@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 RSpec.describe Mixture::Validate::Length do
   let(:options) { { in: 5..20 } }

@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 module Mixture
   module Coerce
@@ -9,8 +10,10 @@ module Mixture
       coerce_to(Types::Object, Itself)
       coerce_to(Types::Class) do |value, type|
         member = type.options.fetch(:members).first
-        fail CoercionError, "Cannot coerce #{value.class} =>" \
-             " #{member}" unless value.is_a?(member)
+        unless value.is_a?(member)
+          fail CoercionError, "Cannot coerce #{value.class} =>" \
+               " #{member}"
+        end
         value
       end
     end

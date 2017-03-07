@@ -1,4 +1,5 @@
 # encoding: utf-8
+# frozen_string_literal: true
 
 module Mixture
   module Validate
@@ -16,8 +17,6 @@ module Mixture
         super
         error("Length is not acceptable") unless acceptable.cover?(length)
       end
-
-      # rubocop:disable Metrics/AbcSize
       # rubocop:disable Metrics/CyclomaticComplexity
       # rubocop:disable Metrics/PerceivedComplexity
 
@@ -97,10 +96,9 @@ module Mixture
       # @raise [ValidationError] If it cannot determine the length of
       #   the value.
       def length
-        case
-        when @value.respond_to?(:size)    then @value.size
-        when @value.respond_to?(:length)  then @value.length
-        when @value.respond_to?(:count)   then @value.count
+        if @value.respond_to?(:size) then @value.size
+        elsif @value.respond_to?(:length)  then @value.length
+        elsif @value.respond_to?(:count)   then @value.count
         else error("Value isn't countable")
         end
       end
