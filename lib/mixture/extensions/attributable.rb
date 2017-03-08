@@ -29,12 +29,17 @@ module Mixture
         # @see AttributeList
         # @return [AttributeList]
         def attributes
-          return @_attributes if @_attributes
+          @_attributes ||= build_attributes
+        end
+
+      private
+
+        def build_attributes
           available = ancestors[1..-1]
                       .select { |c| c.respond_to?(:attributes) }
                       .first
           parent = available ? available.attributes : nil
-          @_attributes = AttributeList.new(parent)
+          AttributeList.new(parent)
         end
       end
 
@@ -66,7 +71,7 @@ module Mixture
         # @param attr [Symbol] The attribute.
         # @raise [ArgumentError]
         def unknown_attribute(attr)
-          fail ArgumentError, "Unknown attribute #{attr} passed"
+          fail ArgumentError, "Unknown attribute #{attr.inspect} passed"
         end
 
         # @overload attribute(key)
